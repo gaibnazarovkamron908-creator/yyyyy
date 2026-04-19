@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>Амир Муталимов</title>
+    <!-- ДОБАВЛЕН ШРИФТ JURA -->
+    <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;500;700;900&family=Jura:wght@300;400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        /* =============================================
+           НОВЫЙ ПРЕЛОАДЕР — СОВРЕМЕННАЯ ИЗЫСКАННОСТЬ
+           ============================================= */
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: #0D0F0E;
+            z-index: 99999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+            transition: opacity 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+            backdrop-filter: blur(0px);
+        }
+
+        .preloader.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Геометрическая сетка — футуристичный фон (ТЕПЕРЬ И НА САЙТЕ) */
+        .global-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;  /* фон под контентом */
+            pointer-events: none;
+            background-image: 
+                linear-gradient(rgba(180, 210, 140, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(180, 210, 140, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            opacity: 0;
+            animation: gridFade 1.2s ease-out forwards;
+            animation-delay: 0.3s;
+        }
+
+        /* У прелоадера своя отдельная сетка, которая после загрузки исчезает, 
+           а глобальная сетка .global-grid уже видна и остаётся. 
+           Чтобы не было наложения — прелоадер скрывается. */
+        .preloader .preloader-grid {
+            position: absolute;
+            inset: 0;
+            background-image: 
+                linear-gradient(rgba(180, 210, 140, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(180, 210, 140, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            opacity: 0;
+            animation: gridFade 1.2s ease-out forwards;
+            animation-delay: 0.3s;
+        }
+
+        @keyframes gridFade {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        /* Центральная композиция — кинетическая архитектура */
+        .preloader-composition {
+            position: relative;
+            width: min(280px, 70vw);
+            height: min(280px, 70vw);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Вращающиеся «лепестки» — замена линии */
+        .preloader-ring {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 1px solid rgba(180, 210, 140, 0.08);
+            animation: ringPulse 3s ease-in-out infinite;
+        }
+
+        .preloader-petal {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+
+        .petal {
+            position: absolute;
+            width: 2px;
+            height: 45%;
+            background: linear-gradient(to top, transparent, #B4D28C, rgba(180, 210, 140, 0.2));
+            left: 50%;
+            transform-origin: bottom center;
+            opacity: 0;
+            animation: petalRise 1.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            box-shadow: 0 0 20px rgba(180, 210, 140, 0.3);
+        }
+
+        .petal:nth-child(1) { transform: translateX(-50%) rotate(0deg); animation-delay: 0.1s; }
+        .petal:nth-child(2) { transform: translateX(-50%) rotate(45deg); animation-delay: 0.2s; }
+        .petal:nth-child(3) { transform: translateX(-50%) rotate(90deg); animation-delay: 0.3s; }
+        .petal:nth-child(4) { transform: translateX(-50%) rotate(135deg); animation-delay: 0.4s; }
+        .petal:nth-child(5) { transform: translateX(-50%) rotate(180deg); animation-delay: 0.5s; }
+        .petal:nth-child(6) { transform: translateX(-50%) rotate(225deg); animation-delay: 0.6s; }
+        .petal:nth-child(7) { transform: translateX(-50%) rotate(270deg); animation-delay: 0.7s; }
+        .petal:nth-child(8) { transform: translateX(-50%) rotate(315deg); animation-delay: 0.8s; }
+
+        @keyframes petalRise {
+            0% { height: 0%; opacity: 0; }
+            40% { opacity: 0.9; }
+            100% { height: 45%; opacity: 0.6; }
+        }
+
+        @keyframes ringPulse {
+            0%, 100% { transform: scale(1); opacity: 0.3; }
+            50% { transform: scale(1.05); opacity: 0.6; }
+        }
+
+        /* ========== ЦЕНТРАЛЬНЫЙ АКЦЕНТ — ПОЛНОСТЬЮ УДАЛЁН ========== */
+        /* Элемент .preloader-core и его анимация coreAppear были удалены — точка больше не появляется */
+
+        /* Типографика — плавающая, невесомая */
+        .preloader-typography {
+            position: absolute;
+            top: 58%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            width: 100%;
+            z-index: 20;
+            padding: 0 5%; /* ГАРАНТИРУЕТ ОТСТУПЫ ПО КРАЯМ */
+            box-sizing: border-box;
+        }
+
+        .preloader-title {
+            font-family: 'Unbounded', sans-serif;
+            /* ИСПРАВЛЕНИЕ: ГАРАНТИЯ ОДНОЙ СТРОКИ И АДАПТИВНОСТИ */
+            font-size: clamp(1.8rem, 8vw, 4.5rem);
+            font-weight: 700;
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
+            /* ИДЕАЛЬНО БЕЛЫЙ ЦВЕТ */
+            color: #FFFFFF;
+            background: none;
+            -webkit-background-clip: unset;
+            background-clip: unset;
+            opacity: 0;
+            animation: titleFloat 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation-delay: 0.8s;
+            text-shadow: 0 0 50px rgba(180, 210, 140, 0.2);
+            margin-bottom: 2vh;
+            filter: blur(0px);
+            /* ГАРАНТИЯ ЦЕНТРИРОВАНИЯ И ОДНОЙ СТРОКИ */
+            display: block;
+            width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+            text-indent: 0;
+            padding: 0;
+            white-space: nowrap; /* ЗАПРЕЩАЕМ ПЕРЕНОС — ТОЛЬКО ОДНА СТРОКА */
+            line-height: 1.2;
+            text-align: center;
+            /* ДОПОЛНИТЕЛЬНАЯ ЗАЩИТА ОТ ПЕРЕПОЛНЕНИЯ */
+            overflow: visible;
+            max-width: 100%;
+        }
+
+        /* СТИЛИ ДЛЯ .preloader-meta УДАЛЕНЫ ПОЛНОСТЬЮ — ОНИ БОЛЬШЕ НЕ НУЖНЫ */
+
+        @keyframes titleFloat {
+            0% { opacity: 0; transform: translateY(20px); letter-spacing: 0.8em; filter: blur(8px); }
+            100% { opacity: 1; transform: translateY(0); letter-spacing: 0.4em; filter: blur(0); }
+        }
+
+        /* =============================================
+           ПОЛОСА ЗАГРУЗКИ ПОЛНОСТЬЮ УДАЛЕНА
+           (.preloader-progress и .progress-bar удалены)
+           ============================================= */
+
+        /* =============================================
+           ОСНОВНОЙ САЙТ — АБСОЛЮТНО БЕЗ ИЗМЕНЕНИЙ
+           ============================================= */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: #0D0F0E;
+            font-family: 'Inter', sans-serif;
+            color: #FFFFFF;
+            overflow-x: hidden;
+            width: 100%;
+            min-height: 100vh;
+            /* КУРСОР: убран кастомный — теперь стандартный */
+            cursor: default;
+            opacity: 0;
+            transition: opacity 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        body.loaded {
+            opacity: 1;
+        }
+
+        /* КАСТОМНЫЙ КУРСОР .cursor ПОЛНОСТЬЮ УДАЛЁН ИЗ СТИЛЕЙ И РАЗМЕТКИ */
+
+        .app {
+            position: relative;
+            min-height: 100vh;
+            width: 100%;
+            padding: clamp(1rem, 5vw, 4rem) clamp(1rem, 8vw, 6rem);
+            display: flex;
+            flex-direction: column;
+            z-index: 10;
+            max-width: 2200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: clamp(2rem, 8vh, 6rem);
+            position: relative;
+            z-index: 20;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+
+        /* ИЗМЕНЕНИЕ 1: ШРИФТ UNBOUNDED ДЛЯ ÉQUINOXE */
+        .logo-main {
+            font-size: clamp(1.8rem, 7vw, 4.5rem);
+            font-weight: 900;
+            color: #FFFFFF;
+            background: none;
+            -webkit-background-clip: unset;
+            background-clip: unset;
+            -webkit-text-fill-color: currentColor;
+            line-height: 1.1;
+            font-family: 'Unbounded', sans-serif; 
+        }
+
+        /* ИЗМЕНЕНИЕ 2: ШРИФТ JURA ДЛЯ ATELIER */
+        .logo-sub {
+            font-size: clamp(0.55rem, 2vw, 0.9rem);
+            font-weight: 400; /* Jura отлично смотрится с 400 */
+            letter-spacing: 0.5em;
+            margin-left: 0.3rem;
+            color: rgba(255,255,255,0.5);
+            text-transform: uppercase;
+            font-family: 'Jura', sans-serif;
+        }
+
+        .atelier-badge {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .badge-text {
+            font-size: clamp(0.7rem, 2.5vw, 1rem);
+            font-weight: 500;
+            letter-spacing: 0.35em;
+            color: #B4D28C;
+            text-transform: uppercase;
+            border-bottom: 1.5px solid rgba(180, 210, 140, 0.4);
+            padding-bottom: 0.4rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .badge-year {
+            font-size: clamp(0.65rem, 2vw, 0.9rem);
+            color: rgba(255,255,255,0.3);
+        }
+
+        .hero {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            margin-bottom: clamp(2rem, 5vh, 4rem);
+            width: 100%;
+        }
+
+        .hero-line {
+            display: block;
+            width: 100%;
+            padding: 0.1em 0;
+            margin: -0.1em 0;
+            overflow: visible !important;
+            position: relative;
+            line-height: 1.2;
+        }
+
+        .hero-line:last-child {
+            padding: 0.3em 0;
+        }
+
+        .hero-word {
+            font-family: 'Unbounded', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #FFFFFF;
+            display: inline-block;
+            transform: translateY(120%);
+            animation: slideUpHero 1.4s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+            animation-delay: 0.2s;
+            line-height: 1.1;
+            font-size: clamp(2.5rem, 12vw, 10rem);
+            white-space: nowrap;
+            max-width: 100%;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-shadow: 0 0 1px rgba(255,255,255,0.1);
+        }
+
+        .hero-word.outline {
+            color: transparent;
+            font-weight: 900;
+            text-shadow: 
+                -1px -1px 0 #B4D28C,
+                1px -1px 0 #B4D28C,
+                -1px 1px 0 #B4D28C,
+                1px 1px 0 #B4D28C,
+                -2px -2px 0 rgba(180, 210, 140, 0.3),
+                2px -2px 0 rgba(180, 210, 140, 0.3),
+                -2px 2px 0 rgba(180, 210, 140, 0.3),
+                2px 2px 0 rgba(180, 210, 140, 0.3);
+            -webkit-text-fill-color: transparent;
+            paint-order: stroke fill;
+            margin-left: 0.05em;
+        }
+
+        @supports (-webkit-text-stroke: 2px #B4D28C) {
+            .hero-word.outline {
+                -webkit-text-stroke: 2px #B4D28C;
+                text-shadow: 0 0 20px rgba(180, 210, 140, 0.3);
+            }
+            .hero-line:last-child {
+                padding: 0.5em 0;
+            }
+        }
+
+        .hero-word:nth-child(2) { animation-delay: 0.4s; }
+        .hero-word:nth-child(3) { animation-delay: 0.6s; }
+
+        @keyframes slideUpHero {
+            0% { transform: translateY(120%); }
+            100% { transform: translateY(0%); }
+        }
+
+        .hero-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-top: clamp(1.5rem, 4vh, 3rem);
+            border-top: 1px solid rgba(255,255,255,0.08);
+            padding-top: clamp(1.5rem, 4vh, 2.5rem);
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .desc-block {
+            max-width: 480px;
+            width: 100%;
+        }
+
+        /* ИЗМЕНЕНИЕ 3: ШРИФТ JURA ДЛЯ ТЕКСТА ОПИСАНИЯ */
+        .desc-text {
+            font-size: clamp(0.85rem, 2.5vw, 1.2rem);
+            line-height: 1.6;
+            color: rgba(255,255,255,0.65);
+            font-weight: 400; /* Jura нормально читается с 400 */
+            margin-bottom: 1.5rem;
+            font-family: 'Jura', sans-serif;
+        }
+
+        .meta-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: #B4D28C;
+            font-family: 'Unbounded', sans-serif;
+            font-weight: 500;
+            font-size: clamp(0.7rem, 2vw, 0.9rem);
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            padding: 0.6rem 0;
+            border-bottom: 1.5px solid rgba(180, 210, 140, 0.3);
+            transition: border-color 0.4s, gap 0.4s;
+            /* КУРСОР УБРАН — СТАНДАРТНЫЙ */
+        }
+
+        .meta-link:hover {
+            border-bottom: 1.5px solid #B4D28C;
+            gap: 25px;
+        }
+
+        .scroll-prompt {
+            text-align: right;
+            flex-shrink: 0;
+        }
+
+        .scroll-line {
+            font-size: clamp(0.6rem, 1.8vw, 0.8rem);
+            font-family: 'Unbounded', sans-serif;
+            font-weight: 300;
+            letter-spacing: 0.25em;
+            color: rgba(255,255,255,0.25);
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .scroll-bar-container {
+            width: clamp(60px, 15vw, 100px);
+            height: 2px;
+            background: rgba(255,255,255,0.1);
+            margin-left: auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .scroll-bar-fill {
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: #B4D28C;
+            animation: scrollAnim 3s infinite;
+        }
+
+        @keyframes scrollAnim {
+            0% { left: -100%; }
+            50% { left: 0%; }
+            100% { left: 100%; }
+        }
+
+        /* УБРАНЫ .botanic-overlay И .parallax-leaf — БОЛЬШЕ НЕТ ЛИНИЙ НА ФОНЕ */
+
+        .vignette {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            pointer-events: none;
+            background: radial-gradient(circle at 30% 40%, transparent 0%, rgba(13, 15, 14, 0.65) 90%);
+        }
+
+        /* адаптивность без изменений */
+        @media (max-width: 360px) {
+            .app { padding: 0.5rem 0.8rem; }
+            .hero-word { font-size: 10vw; white-space: normal; word-break: break-word; }
+            .hero-line { padding: 0.2em 0; }
+            .hero-line:last-child { padding: 0.4em 0; }
+            .hero-word.outline { font-size: 11vw; text-shadow: -0.5px -0.5px 0 #B4D28C, 0.5px -0.5px 0 #B4D28C, -0.5px 0.5px 0 #B4D28C, 0.5px 0.5px 0 #B4D28C; }
+        }
+        @media (min-width: 361px) and (max-width: 480px) {
+            .hero-word { font-size: 10vw; white-space: normal; }
+            .hero-line { padding: 0.15em 0; }
+            .hero-line:last-child { padding: 0.35em 0; }
+            .hero-word.outline { font-size: 11vw; }
+        }
+        @media (min-width: 481px) and (max-width: 640px) {
+            .hero-word { font-size: clamp(2.5rem, 9vw, 3.8rem); white-space: nowrap; }
+            .hero-footer { flex-direction: column; align-items: flex-start; }
+            .scroll-prompt { text-align: left; width: 100%; }
+            .scroll-bar-container { margin-left: 0; }
+        }
+        @media (min-width: 641px) and (max-width: 900px) {
+            .hero-word { font-size: clamp(3.5rem, 8vw, 6rem); }
+        }
+        @media (min-width: 901px) and (max-width: 1024px) { .hero-word { font-size: 7rem; } }
+        @media (min-width: 1025px) and (max-width: 1280px) { .hero-word { font-size: 8rem; } }
+        @media (min-width: 1281px) { .hero-word { font-size: 9rem; } }
+        @media (max-width: 900px) and (orientation: landscape) {
+            .app { padding: 0.8rem 1.5rem; }
+            .hero-word { font-size: 7vh; }
+            .hero-line { padding: 0.1em 0; }
+            .hero-line:last-child { padding: 0.3em 0; }
+        }
+        /* МЕДИА-ЗАПРОС ДЛЯ УДАЛЕНИЯ КУРСОРА НА ТАЧ-УСТРОЙСТВАХ БОЛЬШЕ НЕ НУЖЕН, 
+           НО НА ВСЯКИЙ СЛУЧАЙ ОСТАВЛЯЕМ ПУСТЫМ — КУРСОР И ТАК СТАНДАРТНЫЙ */
+        @media (prefers-reduced-motion: reduce) {
+            .hero-word { animation: none; transform: translateY(0); }
+            .scroll-bar-fill { animation: none; left: 0; }
+        }
+        .hero-word.outline {
+            opacity: 1 !important;
+            visibility: visible !important;
+            min-height: 1.2em;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <!-- НОВЫЙ ПРЕЛОАДЕР (ПОЛОСА ЗАГРУЗКИ УДАЛЕНА) -->
+    <div class="preloader" id="preloader">
+        <div class="preloader-grid"></div>
+        <div class="preloader-composition">
+            <div class="preloader-ring"></div>
+            <div class="preloader-petal">
+                <div class="petal"></div><div class="petal"></div><div class="petal"></div><div class="petal"></div>
+                <div class="petal"></div><div class="petal"></div><div class="petal"></div><div class="petal"></div>
+            </div>
+            <!-- Элемент .preloader-core был полностью удалён — центральная точка больше не появляется -->
+        </div>
+        <div class="preloader-typography">
+            <div class="preloader-title">MUTALIMOV</div>
+            <!-- БЛОК .preloader-meta С НАДПИСЬЮ "ATELIER MMXXVI" ПОЛНОСТЬЮ УДАЛЁН -->
+        </div>
+        <!-- БЛОК .preloader-progress ПОЛНОСТЬЮ УДАЛЁН -->
+    </div>
+
+    <!-- ГЛОБАЛЬНАЯ СЕТКА — БУДЕТ ВИДНА ПОСЛЕ СКРЫТИЯ ПРЕЛОАДЕРА И ОСТАНЕТСЯ НАВСЕГДА -->
+    <div class="global-grid"></div>
+
+    <!-- ОСНОВНОЙ КОНТЕНТ — КАСТОМНЫЙ КУРСОР .cursor УДАЛЁН ИЗ РАЗМЕТКИ -->
+    <div class="vignette"></div>
+
+    <div class="app">
+        <header class="header">
+            <div class="logo-area">
+                <div class="logo-main">MUTALIMOV</div>  <!-- UNBOUNDED -->
+                <div class="logo-sub">SYSTEM</div>    <!-- JURA -->
+            </div>
+            <!-- БЛОК .atelier-badge УДАЛЁН ПОЛНОСТЬЮ, БОЛЬШЕ НИЧЕГО НЕ ТРОГАЕМ -->
+        </header>
+
+        <main class="hero">
+            <div class="hero-line">
+                <span class="hero-word">PRO</span>
+            </div>
+            <div class="hero-line">
+                <span class="hero-word">ДЕНЬГИ</span>
+            </div>
+            <div class="hero-line">
+                <span class="hero-word outline">В ОНЛАЙНЕ</span>
+            </div>
+        </main>
+
+        <footer class="hero-footer">
+            <div class="desc-block">
+                <!-- JURA -->
+                <p class="desc-text">
+                    Не просто курсы. Пошаговое ведение до конкретной цели за конкретные сроки.<br>
+                    Результат, вместо постоянного набивания шишок.
+                </p>
+                <a href="#" class="meta-link" id="exploreLink">
+                    <span>К КЕЙСАМ</span>
+                    <span style="font-size: 1.4rem;">→</span>
+                </a>
+            </div>
+            <div class="scroll-prompt">
+                <div class="scroll-line">загрузка</div>
+                <div class="scroll-bar-container">
+                    <div class="scroll-bar-fill"></div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        (function(){
+            "use strict";
+
+            // ПРЕЛОАДЕР
+            const preloader = document.getElementById('preloader');
+            function hidePreloader() {
+                if (preloader) {
+                    preloader.classList.add('hidden');
+                    setTimeout(() => { if (preloader) preloader.style.display = 'none'; }, 1400);
+                }
+            }
+            function setLoaded() {
+                document.body.classList.add('loaded');
+                setTimeout(hidePreloader, 2400); // чуть дольше, чтобы насладиться
+            }
+            if (document.readyState === 'complete') { setLoaded(); }
+            else { window.addEventListener('load', setLoaded); }
+
+            // ВЕСЬ КОД, СВЯЗАННЫЙ С КАСТОМНЫМ КУРСОРОМ (cursor, handleCursor, mousemove, hover)
+            // ПОЛНОСТЬЮ УДАЛЁН.
+            // ОСТАВЛЕНА ТОЛЬКО ОБРАБОТКА КЛИКА ПО ССЫЛКЕ "К КЕЙСАМ"
+            
+            const exploreLink = document.getElementById('exploreLink');
+
+            // УДАЛЕНО: createParallaxLeaves() и всё, что связано с .parallax-leaf
+            // Никаких линий больше не создаётся.
+
+            if (exploreLink) {
+                exploreLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const app = document.querySelector('.app');
+                    app.style.transition = 'filter 0.4s';
+                    app.style.filter = 'brightness(1.2) blur(1px)';
+                    setTimeout(() => { app.style.filter = 'brightness(1) blur(0px)'; }, 200);
+                });
+            }
+        })();
+    </script>
+</body>
+</html>
